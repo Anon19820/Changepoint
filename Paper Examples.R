@@ -574,6 +574,25 @@ TA269_df_all$Treatment <- relevel(TA269_df_all$Treatment, ref ="Dacarbazine")
 TA269.km <- survfit(Surv(time,status)~Treatment, data = TA269_df_all)
 
 
+TA269_df_plt <- data.frame(Time = TA269.km$time, 
+                       Cum_Haz = TA269.km$cumhaz,
+                       Treatment = c(rep("Dacarbazine",TA269.km$strata[1]),
+                                     rep("Vemurafenib",TA269.km$strata[2])))
+TA269_df_plt2<- TA269_df_plt %>% filter(Treatment == "Dacarbazine") %>% mutate(Time = Time + 97/(365.25/12)) %>% 
+  mutate(Treatment = "Dacarbazine (shifted 97 days)")
+TA269_df_plt <- rbind(TA269_df_plt,TA269_df_plt2)
+TA269_df_plt$Treatment <- as.factor(TA269_df_plt$Treatment)
+
+ggplot(data = TA269_df_plt, aes(x = Time, y = Cum_Haz, colour = Treatment))+
+  geom_point(shape = 1)+
+  xlab("Time")+
+  ylab("Cumulative Hazard")+
+  theme_bw()+
+  theme(legend.position="bottom")
+
+ggsave(filename = paste0("Bagust_Beale_TA269.png"),
+       width = 10, height = 5, units = 'in')
+
 ff <- Surv(time,status)~Treatment
 utils::str(m <- model.frame(ff, TA269_df_all))
 mat <- model.matrix(ff, m)
