@@ -367,8 +367,8 @@ model {
       beta_cp_anc_x[j,k] ~ dnorm(0,prec[1])
       #if 2 we have a common value of the covariate across the time-points;
       #otherwise we have different change-point models.
-      beta_cp[j,k] <- beta_cp_x[j,1]*equals(beta_1_ind[j,k],2) + beta_cp_x[j,k]*beta_1_ind[j,k]*(1-equals(beta_1_ind[j,k],2))
-      beta_cp_anc[j,k] <- beta_cp_anc_x[j,1]*equals(beta_2_ind[j,k],2) + beta_cp_anc_x[j,k]*beta_2_ind[j,k]*(1-equals(beta_2_ind[j,k],2))
+      beta_cp[j,k] <- beta_cp_x[j,1]*equals(beta_1_ind[j,k],2) + beta_cp_x[j,k]*(1-equals(beta_1_ind[j,k],2))
+      beta_cp_anc[j,k] <- beta_cp_anc_x[j,1]*equals(beta_2_ind[j,k],2) + beta_cp_anc_x[j,k]*(1-equals(beta_2_ind[j,k],2))
     }
 
     param_1_ln[1:N,k] <-  X_mat %*% beta_cp[1:ncovar_cp,k]
@@ -456,8 +456,8 @@ jags.piecewise_wei_wane <-"
       beta_cp_anc_x[j,k] ~ dnorm(0,prec[1])
       #if 2 we have a common value of the covariate across the time-points;
       #otherwise we have different change-point models.
-      beta_cp[j,k] <- beta_cp_x[j,1]*equals(beta_1_ind[j,k],2) + beta_cp_x[j,k]*beta_1_ind[j,k]*(1-equals(beta_1_ind[j,k],2))
-      beta_cp_anc[j,k] <- beta_cp_anc_x[j,1]*equals(beta_2_ind[j,k],2) + beta_cp_anc_x[j,k]*beta_2_ind[j,k]*(1-equals(beta_2_ind[j,k],2))
+      beta_cp[j,k] <- beta_cp_x[j,1]*equals(beta_1_ind[j,k],2) + beta_cp_x[j,k]*(1-equals(beta_1_ind[j,k],2))
+      beta_cp_anc[j,k] <- beta_cp_anc_x[j,1]*equals(beta_2_ind[j,k],2) + beta_cp_anc_x[j,k]*(1-equals(beta_2_ind[j,k],2))
     }
 
     param_1_ln[1:N,k] <-  X_mat %*% beta_cp[1:ncovar_cp,k]  #beta_cp[trt_flg,ncp] must be zero
